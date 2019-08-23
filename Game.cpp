@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game(): m_Window(sf::VideoMode(640, 360), "Fight Pit")
-, m_Player(0.0f, 345.0f, 15, 15, std::vector<int> {3, 1, 1, 1, 1, 1})
+, m_Player(0.0f, 330.0f, 15, 15, std::vector<int> {3, 1, 1, 1, 1, 1})
 {
     m_PlayerTexture.loadFromFile("assets\\slime.png");
     m_Player.m_Sprite.setTexture(m_PlayerTexture);
@@ -17,7 +17,7 @@ void Game::gameLoop()
         if (m_Clock.getElapsedTime().asSeconds() >= 1.0f/60.0f)
         {
             dt = m_Clock.restart().asSeconds();
-            processInput();
+            processInput(dt);
             update(dt);
             draw();
         } else {
@@ -26,7 +26,7 @@ void Game::gameLoop()
     }
 }
 
-void Game::processInput()
+void Game::processInput(const float &dt)
 {
     sf::Event event;
     while (m_Window.pollEvent(event))
@@ -36,11 +36,11 @@ void Game::processInput()
     }
     if (sf::Joystick::isConnected(0))
     {
-        m_Player.processInput();
+        m_Player.processInput(dt);
     }
 }
 
-void Game::update(float dt)
+void Game::update(const float &dt)
 {
     m_Player.update(dt);
 }

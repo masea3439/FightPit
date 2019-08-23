@@ -10,8 +10,8 @@ private:
     sf::Texture m_PlayerTexture;
     sf::Clock m_Clock;
     Player m_Player;
-    void processInput();
-    void update(float dt);
+    void processInput(const float &dt);
+    void update(const float &dt);
     void draw();
 public:
     Game();

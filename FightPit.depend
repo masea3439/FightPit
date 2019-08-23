@@ -411,17 +411,17 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1566264340 source:c:\users\mathieu\c++ projects\fightpit\gameobject.cpp
+1566525454 source:c:\users\mathieu\c++ projects\fightpit\gameobject.cpp
 	"GameObject.h"
 
-1566264861 c:\users\mathieu\c++ projects\fightpit\gameobject.h
+1566525455 c:\users\mathieu\c++ projects\fightpit\gameobject.h
 	<SFML/Graphics.hpp>
 	<vector>
 
-1566244707 c:\users\mathieu\c++ projects\fightpit\game.h
+1566421606 c:\users\mathieu\c++ projects\fightpit\game.h
 	<SFML/Graphics.hpp>
 	"GameObject.h"
 
-1566264480 source:c:\users\mathieu\c++ projects\fightpit\game.cpp
+1566514038 source:c:\users\mathieu\c++ projects\fightpit\game.cpp
 	"Game.h"
 
