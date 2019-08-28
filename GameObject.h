@@ -5,7 +5,6 @@
 
 namespace cst
 {
-    extern const float frameTime;
     extern const float gravityAcceleration;
     extern const float horizontalAcceleration;
     extern const float walkVelocity;
@@ -19,9 +18,19 @@ namespace cst
     enum direction {left, right};
 }
 
+struct AnimationInfo
+{
+    int x;
+    int y;
+    int width;
+    int height;
+    int frames;
+    float frameTime;
+};
+
 struct AnimationFrames
 {
-    AnimationFrames(int y, int width, int height, int frames);
+    AnimationFrames(AnimationInfo animationInfo);
     std::vector<sf::IntRect> m_RightFrames;
     std::vector<sf::IntRect> m_LeftFrames;
 };
@@ -29,8 +38,9 @@ struct AnimationFrames
 class GameObject
 {
 private:
-    std::vector<int> m_FramesPerAnimation;
+    std::vector<AnimationInfo> m_AnimationInfoList;
     std::vector<AnimationFrames> m_Animations;
+    float m_ElapsedTime;
     void updateFrame(const float &dt);
 
 protected:
@@ -39,10 +49,9 @@ protected:
     int m_Facing;
     void updateSpriteRect();
     void resetFrame();
-    void flipSprite();
 
 public:
-    GameObject(float x, float y, int width, int height, std::vector<int> framesPerAnimation);
+    GameObject(float x, float y, std::vector<AnimationInfo> animationInfoList);
     sf::Sprite m_Sprite;
     void update(const float &dt);
 };
@@ -57,7 +66,7 @@ private:
     float m_abilityCooldownElapsed;
     void checkBorderCollision();
 public:
-    Player(float x, float y, int width, int height, std::vector<int> framesPerAnimation);
+    Player(float x, float y, std::vector<AnimationInfo> animationInfoList);
     void processInput(const float &dt);
     void update(const float &dt);
 };

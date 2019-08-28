@@ -1,10 +1,14 @@
 #include "Game.h"
 
 Game::Game(): m_Window(sf::VideoMode(640, 360), "Fight Pit")
-, m_Player(0.0f, 330.0f, 15, 15, std::vector<int> {3, 1, 1, 1, 1, 1})
+, m_Player(0.0f, 330.0f, std::vector<AnimationInfo> {AnimationInfo{0, 0, 15, 15, 3, 0.5f}, AnimationInfo{0, 15, 15, 15, 1, 0.5f},
+           AnimationInfo{0, 30, 15, 15, 1, 0.5f}, AnimationInfo{0, 45, 15, 15, 1, 0.5f}, AnimationInfo{0, 60, 15, 15, 1, 0.5f}, AnimationInfo{0, 75, 15, 15, 1, 0.5f}})
+, m_Knight(400.0f, 270.0f, std::vector<AnimationInfo> {AnimationInfo{0, 0, 51, 45, 4, 0.3f}})
 {
     m_PlayerTexture.loadFromFile("assets\\slime.png");
+    m_KnightTexture.loadFromFile("assets\\knight.png");
     m_Player.m_Sprite.setTexture(m_PlayerTexture);
+    m_Knight.m_Sprite.setTexture(m_KnightTexture);
 }
 
 void Game::gameLoop()
@@ -43,6 +47,7 @@ void Game::processInput(const float &dt)
 void Game::update(const float &dt)
 {
     m_Player.update(dt);
+    m_Knight.update(dt);
 }
 
 void Game::draw()
@@ -51,5 +56,6 @@ void Game::draw()
 
 
     m_Window.draw(m_Player.m_Sprite);
+    m_Window.draw(m_Knight.m_Sprite);
     m_Window.display();
 }

@@ -2,7 +2,6 @@
 
 namespace cst
 {
-    const float frameTime = 0.5f;
     const float gravityAcceleration = 1000.0f;
     const float horizontalAcceleration = 1500.0f;
     const float walkVelocity = 250.0f;
@@ -14,27 +13,28 @@ namespace cst
     const float hDashVelocity = dashVelocity / 2.0f;
 }
 
-AnimationFrames::AnimationFrames(int y, int width, int height, int frames)
+AnimationFrames::AnimationFrames(AnimationInfo animationInfo)
 {
-    m_RightFrames.reserve(frames);
-    m_LeftFrames.reserve(frames);
-    for (int i = 0; i < frames; i++)
+    m_RightFrames.reserve(animationInfo.frames);
+    m_LeftFrames.reserve(animationInfo.frames);
+    for (int i = 0; i < animationInfo.frames; i++)
     {
-        m_RightFrames[i] = sf::IntRect(i*width, y, width, height);
-        m_LeftFrames[i] = sf::IntRect(i*width + width, y, -width, height);
+        m_RightFrames[i] = sf::IntRect(animationInfo.x + i*animationInfo.width, animationInfo.y, animationInfo.width, animationInfo.height);
+        m_LeftFrames[i] = sf::IntRect(animationInfo.x + i*animationInfo.width + animationInfo.width, animationInfo.y, -animationInfo.width, animationInfo.height);
     }
 }
 
-GameObject::GameObject(float x, float y, int width, int height, std::vector<int> framesPerAnimation)
+GameObject::GameObject(float x, float y, std::vector<AnimationInfo> animationInfoList)
 {
     m_Sprite.setPosition(x, y);
     m_Sprite.setScale(2.0f, 2.0f);
-    m_FramesPerAnimation = framesPerAnimation;
-    m_Animations.reserve(framesPerAnimation.size());
-    for (unsigned int i = 0; i < framesPerAnimation.size(); i++)
+    m_AnimationInfoList = animationInfoList;
+    m_Animations.reserve(animationInfoList.size());
+    for (unsigned int i = 0; i < animationInfoList.size(); i++)
     {
-        m_Animations[i] = AnimationFrames(height*i ,width, height, framesPerAnimation[i]);
+        m_Animations[i] = AnimationFrames(animationInfoList[i]);
     }
+    m_ElapsedTime = 0.0f;
     m_State = 0;
     m_Frame = 0;
     m_Facing = cst::right;
@@ -54,13 +54,12 @@ void GameObject::updateSpriteRect()
 
 void GameObject::updateFrame(const float &dt)
 {
-    static float elapsedTime = 0.0f;
-    elapsedTime += dt;
-    if (elapsedTime >= cst::frameTime)
+    m_ElapsedTime += dt;
+    if (m_ElapsedTime >= m_AnimationInfoList[m_State].frameTime)
     {
-        elapsedTime -= cst::frameTime;
+        m_ElapsedTime -= m_AnimationInfoList[m_State].frameTime;
         m_Frame += 1;
-        if (m_Frame >= m_FramesPerAnimation[m_State])
+        if (m_Frame >= m_AnimationInfoList[m_State].frames)
         {
             m_Frame = 0;
         }
@@ -70,6 +69,7 @@ void GameObject::updateFrame(const float &dt)
 
 void GameObject::resetFrame()
 {
+    m_ElapsedTime = 0.0f;
     m_Frame = 0;
     updateSpriteRect();
 }
@@ -79,8 +79,8 @@ void GameObject::update(const float &dt)
     updateFrame(dt);
 }
 
-Player::Player(float x, float y, int width, int height, std::vector<int> framesPerAnimation):
-    GameObject(x, y, width, height, framesPerAnimation)
+Player::Player(float x, float y, std::vector<AnimationInfo> animationInfoList):
+    GameObject(x, y, animationInfoList)
 {
     m_VelX = 0.0f;
     m_VelY = 0.0f;
@@ -180,6 +180,7 @@ void Player::processInput(const float &dt)
         if (m_State == cst::still || m_State == cst::walk || m_State == cst::jump || m_State == cst::air)
         {
             m_Facing = cst::right;
+            resetFrame();
         }
     } else if (xAxisPos <= -40) {
         if (m_State == cst::still || m_State == cst::walk)
@@ -196,6 +197,7 @@ void Player::processInput(const float &dt)
         if (m_State == cst::still || m_State == cst::walk || m_State == cst::jump || m_State == cst::air)
         {
             m_Facing = cst::left;
+            resetFrame();
         }
     } else {
         if (m_State == cst::walk)

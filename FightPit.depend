@@ -411,17 +411,31 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1566525454 source:c:\users\mathieu\c++ projects\fightpit\gameobject.cpp
+1567033288 source:c:\users\mathieu\c++ projects\fightpit\gameobject.cpp
 	"GameObject.h"
 
-1566525455 c:\users\mathieu\c++ projects\fightpit\gameobject.h
+1567033652 c:\users\mathieu\c++ projects\fightpit\gameobject.h
 	<SFML/Graphics.hpp>
 	<vector>
 
-1566421606 c:\users\mathieu\c++ projects\fightpit\game.h
+1567033288 c:\users\mathieu\c++ projects\fightpit\game.h
 	<SFML/Graphics.hpp>
 	"GameObject.h"
+	"Enemy.h"
 
-1566514038 source:c:\users\mathieu\c++ projects\fightpit\game.cpp
+1567033288 source:c:\users\mathieu\c++ projects\fightpit\game.cpp
 	"Game.h"
+
+1566599666 source:c:\users\mathieu\c++ projects\fightpit\hitdetection.cpp
+	"HitDetection.h"
+
+1566599617 c:\users\mathieu\c++ projects\fightpit\hitdetection.h
+	<vector>
+	<SFML/Graphics.hpp>
+
+1567032304 source:c:\users\mathieu\c++ projects\fightpit\enemy.cpp
+	"Enemy.h"
+
+1567020754 c:\users\mathieu\c++ projects\fightpit\enemy.h
+	"GameObject.h"
 
