@@ -5,7 +5,7 @@
 class Knight: public GameObject
 {
 private:
-    const sf::Vector2f m_StateOrigins[1][2];
+    const sf::Vector2f m_StateOrigins[3][2];
     const Player& player;
     int m_Attack;
     void updateOrigin();
