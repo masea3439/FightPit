@@ -49,7 +49,6 @@ void GameObject::updateSpriteRect()
     } else {
         m_Sprite.setTextureRect(m_Animations[m_State].m_LeftFrames[m_Frame]);
     }
-
 }
 
 void GameObject::updateFrame(const float &dt)
@@ -134,9 +133,9 @@ void Player::checkBorderCollision()
 
 void Player::processInput(const float &dt)
 {
-    const float xAxisPos = sf::Joystick::getAxisPosition(1, sf::Joystick::X);
-    const float yAxisPos = sf::Joystick::getAxisPosition(1, sf::Joystick::Y);
-    const float zAxisPos = sf::Joystick::getAxisPosition(1, sf::Joystick::Z);
+    const float xAxisPos = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+    const float yAxisPos = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+    const float zAxisPos = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
 
     if (zAxisPos <= -20 && (m_State != cst::dash || m_State != cst::dive) && m_abilityCooldownElapsed >= cst::abilityCooldown) {
         if (yAxisPos <= 50)
@@ -216,7 +215,7 @@ void Player::processInput(const float &dt)
             }
         }
     }
-    if (sf::Joystick::isButtonPressed(1, 0) && (m_State == cst::still || m_State == cst::walk))
+    if (sf::Joystick::isButtonPressed(0, 0) && (m_State == cst::still || m_State == cst::walk))
     {
         m_VelY = cst::jumpVelocity;
         m_State = cst::jump;

@@ -3,7 +3,8 @@
 Game::Game(): m_Window(sf::VideoMode(640, 360), "Fight Pit")
 , m_Player(0.0f, 330.0f, std::vector<AnimationInfo> {AnimationInfo{0, 0, 15, 15, 3, 0.5f}, AnimationInfo{0, 15, 15, 15, 1, 0.5f},
            AnimationInfo{0, 30, 15, 15, 1, 0.5f}, AnimationInfo{0, 45, 15, 15, 1, 0.5f}, AnimationInfo{0, 60, 15, 15, 1, 0.5f}, AnimationInfo{0, 75, 15, 15, 1, 0.5f}})
-, m_Knight(400.0f, 270.0f, std::vector<AnimationInfo> {AnimationInfo{0, 0, 51, 45, 4, 0.3f}, AnimationInfo{0, 45, 73, 66, 7, 0.1f}, AnimationInfo{0, 111, 61, 45, 2, 0.1f}}, m_Player)
+, m_Knight(500.0f, 315.0f, std::vector<AnimationInfo> {AnimationInfo{0, 0, 51, 45, 4, 0.3f}, AnimationInfo{0, 45, 73, 66, 7, 0.1f},
+           AnimationInfo{0, 111, 61, 45, 2, 0.1f}, AnimationInfo{146, 45, 73, 66, 1, 1.0f}}, m_Player)
 {
     m_PlayerTexture.loadFromFile("assets\\slime.png");
     m_KnightTexture.loadFromFile("assets\\knight.png");
@@ -38,7 +39,7 @@ void Game::processInput(const float &dt)
         if (event.type == sf::Event::Closed)
             m_Window.close();
     }
-    if (sf::Joystick::isConnected(1))
+    if (sf::Joystick::isConnected(0))
     {
         m_Player.processInput(dt);
     }
@@ -54,8 +55,16 @@ void Game::draw()
 {
     m_Window.clear();
 
-
     m_Window.draw(m_Player.m_Sprite);
     m_Window.draw(m_Knight.m_Sprite);
+
+    sf::RectangleShape hitbox = sf::RectangleShape();
+    hitbox.setFillColor(sf::Color::Transparent);
+    hitbox.setOutlineColor(sf::Color::Red);
+    hitbox.setOutlineThickness(3.0f);
+    hitbox.setSize(sf::Vector2f(m_Knight.m_Hitbox.width, m_Knight.m_Hitbox.height));
+    hitbox.setPosition(m_Knight.m_Hitbox.left, m_Knight.m_Hitbox.top);
+    m_Window.draw(hitbox);
+
     m_Window.display();
 }

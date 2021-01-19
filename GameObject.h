@@ -2,6 +2,7 @@
 #define GAMEOBJECT_H_INCLUDED
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
 
 namespace cst
 {
