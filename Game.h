@@ -15,6 +15,7 @@ private:
     Knight m_Knight;
     void processInput(const float &dt);
     void update(const float &dt);
+    void checkCollision();
     void draw();
 public:
     Game();

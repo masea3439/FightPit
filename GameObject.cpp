@@ -11,6 +11,10 @@ namespace cst
     const float abilityCooldown = 0.5f;
     const float dashVelocity = 900.0f;
     const float hDashVelocity = dashVelocity / 2.0f;
+    const float hitboxHeight = 28.0f;
+    const float hitboxLength = 28.0f;
+    const float totalInvTime = 0.2f;
+    const float bounceVelocity = 2000.0f;
 }
 
 AnimationFrames::AnimationFrames(AnimationInfo animationInfo)
@@ -85,6 +89,8 @@ Player::Player(float x, float y, std::vector<AnimationInfo> animationInfoList):
     m_VelY = 0.0f;
     m_abilityTimeElapsed = 0.0f;
     m_abilityCooldownElapsed = cst::abilityCooldown;
+    m_Hitbox = sf::FloatRect(x, y, cst::hitboxLength, cst::hitboxHeight);
+    m_InvTime = 0.0f;
 }
 
 void Player::checkBorderCollision()
@@ -247,6 +253,34 @@ void Player::update(const float &dt)
             }
         }
     }
+    m_Hitbox.left = m_Sprite.getPosition().x;
+    m_Hitbox.top = m_Sprite.getPosition().y;
+    if (m_InvTime > 0.0f) {
+        m_InvTime -= dt;
+    }
     checkBorderCollision();
+}
+
+void Player::handleEnemyCollision(sf::FloatRect otherHitbox)
+{
+    if (m_State == cst::dash || m_State == cst::dive) {
+        if (m_State == cst::dash || m_Hitbox.top > otherHitbox.top) {
+            m_VelY = 0.0f;
+            if (m_VelX > 0.0f) {
+                m_VelX = -cst::dashVelocity;
+            } else {
+                m_VelX = cst::dashVelocity;
+            }
+        } else if (m_State == cst::dive) {
+            m_VelY = cst::jumpVelocity;
+            if (m_VelX > 0.0f) {
+                m_VelX = cst::dashVelocity;
+            } else {
+                m_VelX = -cst::dashVelocity;
+            }
+        }
+        m_InvTime = cst::totalInvTime;
+        m_State = cst::air;
+    }
 }
 

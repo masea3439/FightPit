@@ -6,15 +6,6 @@
 
 namespace cst
 {
-    extern const float gravityAcceleration;
-    extern const float horizontalAcceleration;
-    extern const float walkVelocity;
-    extern const float jumpVelocity;
-    extern const float hJumpVelocity;
-    extern const float abilityTime;
-    extern const float abilityCooldown;
-    extern const float dashVelocity;
-    extern const float hDashVelocity;
     enum playerState {still, walk, jump, air, dash, dive};
     enum direction {left, right};
 }
@@ -67,9 +58,12 @@ private:
     float m_abilityCooldownElapsed;
     void checkBorderCollision();
 public:
+    sf::FloatRect m_Hitbox;
+    float m_InvTime;
     Player(float x, float y, std::vector<AnimationInfo> animationInfoList);
     void processInput(const float &dt);
     void update(const float &dt);
+    void handleEnemyCollision(sf::FloatRect otherHitbox);
 };
 
 

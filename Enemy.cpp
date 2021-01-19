@@ -1,12 +1,12 @@
 #include "Enemy.h"
 
-namespace cst
+namespace kni
 {
-    enum knightAttack {k_idle, k_charge};
-    enum knightState {k_idle_stand, k_charge_prep, k_charge_attack, k_charge_sit};
-    const float knightChargeVelocity = 500.0f;
-    const float knightRecoilVelocity = 250.0f;
-    const float knightJumpVelocity = -250.0f;
+    enum attack {k_idle, k_charge};
+    enum state {k_idle_stand, k_charge_prep, k_charge_attack, k_charge_sit};
+    const float chargeVelocity = 500.0f;
+    const float recoilVelocity = 250.0f;
+    const float jumpVelocity = -250.0f;
     const float hitboxHeight = 90.0f;
     const float hitboxLength = 45.0f;
     const float knightGravityAcceleration = 500.0f;
@@ -20,25 +20,25 @@ Knight::Knight(float x, float y, std::vector<AnimationInfo> animationInfoList, c
     m_VelX = 0;
     m_VelY = 0;
     updateOrigin();
-    m_Attack = cst::k_idle;
-    m_Hitbox = sf::FloatRect(x-cst::hitboxLength/2, y-cst::hitboxHeight/2, cst::hitboxLength, cst::hitboxHeight);
+    m_Attack = kni::k_idle;
+    m_Hitbox = sf::FloatRect(x-kni::hitboxLength/2, y-kni::hitboxHeight/2, kni::hitboxLength, kni::hitboxHeight);
 }
 
 void Knight::update(const float &dt)
 {
     GameObject::update(dt);
     switch(m_Attack) {
-        case cst::k_idle: idle(dt); break;
-        case cst::k_charge: charge(dt); break;
+        case kni::k_idle: idle(dt); break;
+        case kni::k_charge: charge(dt); break;
     }
     float shiftX = m_VelX * dt;
     float shiftY = m_VelY * dt;
     m_Sprite.move(shiftX, shiftY);
     m_Hitbox.left += shiftX;
     m_Hitbox.top += shiftY;
-    if (m_Hitbox.top + cst::hitboxHeight > 360.0f) {
-        m_Sprite.setPosition(m_Sprite.getPosition().x, 360.0f-cst::hitboxHeight/2);
-        m_Hitbox.top = 360.0f-cst::hitboxHeight;
+    if (m_Hitbox.top + kni::hitboxHeight > 360.0f) {
+        m_Sprite.setPosition(m_Sprite.getPosition().x, 360.0f-kni::hitboxHeight/2);
+        m_Hitbox.top = 360.0f-kni::hitboxHeight;
         m_VelY = 0;
     }
 }
@@ -72,8 +72,8 @@ void Knight::idle(const float &dt)
         }
     } else {
         idleTime = 0.0f;
-        m_Attack = cst::k_charge;
-        m_State = cst::k_charge_prep;
+        m_Attack = kni::k_charge;
+        m_State = kni::k_charge_prep;
         updateOrigin();
         resetFrame();
     }
@@ -83,43 +83,43 @@ void Knight::charge(const float &dt)
 {
     static float chargeTime = 0.0f;
     switch(m_State) {
-        case cst::k_charge_prep:
+        case kni::k_charge_prep:
             if (chargeTime < 0.65f){
                 chargeTime += dt;
             } else {
-                m_State = cst::k_charge_attack;
+                m_State = kni::k_charge_attack;
                 if (m_Facing == cst::right) {
-                    m_VelX = cst::knightChargeVelocity;
+                    m_VelX = kni::chargeVelocity;
                 } else {
-                    m_VelX = -cst::knightChargeVelocity;
+                    m_VelX = -kni::chargeVelocity;
                 }
                 updateOrigin();
                 resetFrame();
             }
             break;
-        case cst::k_charge_attack:
+        case kni::k_charge_attack:
             if (m_Hitbox.left <= 0.0f || m_Hitbox.left+m_Hitbox.width >= 640.0f) {
                 chargeTime = 0.0f;
                 if (m_Hitbox.left <= 0.0f) {
-                    m_VelX = cst::knightRecoilVelocity;
+                    m_VelX = kni::recoilVelocity;
                 } else {
-                    m_VelX = -cst::knightRecoilVelocity;
+                    m_VelX = -kni::recoilVelocity;
                 }
-                m_VelY = cst::knightJumpVelocity;
-                m_State = cst::k_charge_sit;
+                m_VelY = kni::jumpVelocity;
+                m_State = kni::k_charge_sit;
                 updateOrigin();
                 resetFrame();
             }
             break;
-        case cst::k_charge_sit:
+        case kni::k_charge_sit:
             if (chargeTime < 1.0f){
-                m_VelY += cst::knightGravityAcceleration * dt;
+                m_VelY += kni::knightGravityAcceleration * dt;
                 chargeTime += dt;
             } else {
                 chargeTime = 0.0f;
                 m_VelX = 0;
-                m_Attack = cst::k_idle;
-                m_State = cst::k_idle_stand;
+                m_Attack = kni::k_idle;
+                m_State = kni::k_idle_stand;
                 updateOrigin();
                 resetFrame();
             }
